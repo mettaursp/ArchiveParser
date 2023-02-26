@@ -111,6 +111,7 @@ namespace Archive
 
 			FileEntry& file = Files.back();
 			file.Index = index;
+			file.Location = Files.size() - 1;
 			file.Path = path;
 
 			FileMap.insert(std::make_pair(file.Path, nullptr));
@@ -128,9 +129,6 @@ namespace Archive
 			{
 				if (parentDir > 0)
 					file.Parent = (DirectoryEntry*)-1ll;
-
-				if (parentDir == 0 && RootDirectory.FileStartIndex == (size_t)-1)
-					RootDirectory.FileStartIndex = Files.size() - 1;
 
 				continue;
 			}
@@ -152,7 +150,6 @@ namespace Archive
 					DirectoryEntry& directory = Directories.back();
 					directory.Path = subPath;
 					directory.Index = Directories.size() - 1;
-					directory.FileStartIndex = file.Index;
 
 					if (level > 0)
 						directory.Parent = (DirectoryEntry*)-1ll;
@@ -190,6 +187,7 @@ namespace Archive
 			}
 
 			directory.DirectoryIndices.reserve(directory.Directories.size());
+			directory.FileIndices.reserve(directory.Files.size());
 			directory.Parent->Directories.insert(std::move(std::make_pair(std::move(directory.Path.filename()), &directory)));
 			directory.Parent->DirectoryIndices.push_back(directory.Index);
 		}
@@ -209,6 +207,7 @@ namespace Archive
 			}
 
 			file.Parent->Files.insert(std::move(std::make_pair(std::move(file.Path.filename()), &file)));
+			file.Parent->FileIndices.push_back(file.Location);
 		}
 	}
 
@@ -504,7 +503,7 @@ namespace Archive
 		if (index == FileMap.end())
 			return (size_t)-1;
 
-		return index->second->Index;
+		return index->second->Location;
 	}
 
 	size_t ArchiveParser::GetDirectoryIndex(const fs::path& path) const
@@ -547,7 +546,7 @@ namespace Archive
 		const DirectoryEntry& directory = directoryIndex == (size_t)-1 ? RootDirectory : Directories[directoryIndex];
 
 		if (index < directory.Files.size())
-			return directory.FileStartIndex + index;
+			return directory.FileIndices[index];
 
 		return (size_t)-1;
 	}

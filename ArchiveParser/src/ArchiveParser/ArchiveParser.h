@@ -48,6 +48,7 @@ namespace Archive
 		struct FileEntry
 		{
 			size_t Index = (size_t)-1;
+			size_t Location = (size_t)-1;
 			fs::path Path;
 			size_t EncodedSize = 0;
 			size_t CompressedSize = 0;
@@ -59,12 +60,12 @@ namespace Archive
 		struct DirectoryEntry
 		{
 			size_t Index = (size_t)-1;
-			size_t FileStartIndex = (size_t)-1;
 			DirectoryEntry* Parent = nullptr;
 			fs::path Path;
 			std::unordered_map<fs::path, FileEntry*> Files;
 			std::unordered_map<fs::path, DirectoryEntry*> Directories;
 			std::vector<size_t> DirectoryIndices;
+			std::vector<size_t> FileIndices;
 		};
 
 		std::ifstream ArchiveFile;

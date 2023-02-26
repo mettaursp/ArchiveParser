@@ -6,58 +6,59 @@
 #include <iostream>
 #include <cassert>
 
-UUID ParseUUID(const std::string& value, int offset)
-{
-	UUID uuid;
-	int index = 0;
-	int shifts = 0;
-
-	for (size_t i = offset; i < value.size(); ++i)
-	{
-		if (value[i] == '-')
-			continue;
-
-		uuid[index] <<= 4;
-
-		if (value[i] >= '0' && value[i] <= '9')
-			uuid[index] += value[i] - '0';
-		else if (value[i] >= 'a' && value[i] <= 'f')
-			uuid[index] += value[i] - 'a' + 0xA;
-
-		shifts += 4;
-
-		if (shifts == 64)
-		{
-			shifts = 0;
-			++index;
-		}
-	}
-
-	return uuid;
-}
-
-unsigned int ParseHexInt(const std::string& value, int offset)
-{
-	unsigned int uuid = 0;
-
-	for (size_t i = offset; i < value.size() && i < offset + 8; ++i)
-	{
-		if (value[i] == '-')
-			continue;
-
-		uuid <<= 4;
-
-		if (value[i] >= '0' && value[i] <= '9')
-			uuid += value[i] - '0';
-		else if (value[i] >= 'a' && value[i] <= 'f')
-			uuid += value[i] - 'a' + 0xA;
-	}
-
-	return uuid;
-}
-
 namespace Archive
 {
+
+	UUID ParseUUID(const std::string& value, int offset)
+	{
+		UUID uuid;
+		int index = 0;
+		int shifts = 0;
+
+		for (size_t i = offset; i < value.size(); ++i)
+		{
+			if (value[i] == '-')
+				continue;
+
+			uuid[index] <<= 4;
+
+			if (value[i] >= '0' && value[i] <= '9')
+				uuid[index] += value[i] - '0';
+			else if (value[i] >= 'a' && value[i] <= 'f')
+				uuid[index] += value[i] - 'a' + 0xA;
+
+			shifts += 4;
+
+			if (shifts == 64)
+			{
+				shifts = 0;
+				++index;
+			}
+		}
+
+		return uuid;
+	}
+
+	unsigned int ParseHexInt(const std::string& value, int offset)
+	{
+		unsigned int uuid = 0;
+
+		for (size_t i = offset; i < value.size() && i < offset + 8; ++i)
+		{
+			if (value[i] == '-')
+				continue;
+
+			uuid <<= 4;
+
+			if (value[i] >= '0' && value[i] <= '9')
+				uuid += value[i] - '0';
+			else if (value[i] >= 'a' && value[i] <= 'f')
+				uuid += value[i] - 'a' + 0xA;
+		}
+
+		return uuid;
+	}
+
 	namespace Metadata
 	{
 		std::vector<Tag> Entry::TagTypes = {};

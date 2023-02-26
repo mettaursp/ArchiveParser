@@ -32,29 +32,32 @@ namespace fs = std::filesystem;
 * <http://emergent.net/aweb/1.0/ckpt/hash>
 */
 
-class UUID
+namespace Archive
 {
-public:
-	unsigned long long Values[2] = { 0, 0 };
-
-	UUID() {}
-
-	bool operator==(const UUID& other) const
+	class UUID
 	{
-		return Values[0] == other.Values[0] && Values[1] == other.Values[1];
-	}
+	public:
+		unsigned long long Values[2] = { 0, 0 };
 
-	template <typename Self>
-	auto& operator[](this Self& self, size_t index)
-	{
-		return self.Values[index];
-	}
-};
+		UUID() {}
+
+		bool operator==(const UUID& other) const
+		{
+			return Values[0] == other.Values[0] && Values[1] == other.Values[1];
+		}
+
+		template <typename Self>
+		auto& operator[](this Self& self, size_t index)
+		{
+			return self.Values[index];
+		}
+	};
+}
 
 template <>
-struct std::hash<UUID>
+struct std::hash<Archive::UUID>
 {
-	size_t operator()(const UUID& key) const
+	size_t operator()(const Archive::UUID& key) const
 	{
 		size_t value = 17;
 		
@@ -65,11 +68,12 @@ struct std::hash<UUID>
 	}
 };
 
-UUID ParseUUID(const std::string& value, int offset);
-unsigned int ParseHexInt(const std::string& value, int offset);
 
 namespace Archive
 {
+	UUID ParseUUID(const std::string& value, int offset);
+	unsigned int ParseHexInt(const std::string& value, int offset);
+
 	class ArchiveReader;
 
 	namespace Metadata
