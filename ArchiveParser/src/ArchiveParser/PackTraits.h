@@ -75,6 +75,7 @@ static_assert(
 
 enum class CompressionType : std::uint32_t
 {
+	None = 0,
 	Deflate = 0xEE000009,
 	Png = 0xEE000000,
 	Usm = 0xFF000000

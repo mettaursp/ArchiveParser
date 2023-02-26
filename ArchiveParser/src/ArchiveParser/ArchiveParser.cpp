@@ -271,6 +271,7 @@ namespace Archive
 			file.CompressedSize = fileHeader.CompressedSize;
 			file.Size = fileHeader.Size;
 			file.Offset = fileHeader.Offset;
+			file.Compression = fileHeader.Compression;
 		}
 	}
 
@@ -293,7 +294,7 @@ namespace Archive
 			Traits::Key_LUT[file.CompressedSize % std::extent<std::remove_cvref_t<decltype(Traits::Key_LUT)>, 0u>::value],
 			contents.data(),
 			contents.size(),
-			file.CompressedSize != file.Size
+			file.Compression != CompressionType::None || file.CompressedSize != file.Size
 		);
 
 		return true;

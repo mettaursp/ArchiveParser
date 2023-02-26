@@ -54,6 +54,7 @@ namespace Archive
 			size_t CompressedSize = 0;
 			size_t Size = 0;
 			size_t Offset = 0;
+			CompressionType Compression = CompressionType::None;
 			DirectoryEntry* Parent = nullptr;
 		};
 
