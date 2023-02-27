@@ -262,12 +262,17 @@ namespace Archive
 
 		void Entry::LoadEntries(ArchiveReader& reader, const fs::path& path)
 		{
+			std::string buffer;
+			LoadEntries(reader, path, buffer);
+		}
+
+		void Entry::LoadEntries(ArchiveReader& reader, const fs::path& path, std::string& buffer)
+		{
 			if (!reader.IsValid()) return;
 
 			ArchivePath webMeta = reader.GetPath(path);
 
 			size_t files = webMeta.ChildFiles();
-			std::string buffer;
 
 			for (size_t i = 0; i < files; ++i)
 			{

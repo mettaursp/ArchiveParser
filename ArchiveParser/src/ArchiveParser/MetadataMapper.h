@@ -116,6 +116,7 @@ namespace Archive
 			static size_t GetTag(const std::string& name);
 			static Entry& Add();
 			static void IndexEntries();
+			static void LoadEntries(ArchiveReader& reader, const fs::path& path, std::string& buffer);
 			static void LoadEntries(ArchiveReader& reader, const fs::path& path);
 			static bool LoadCached(const fs::path& path);
 			static void Cache(const fs::path& path);
