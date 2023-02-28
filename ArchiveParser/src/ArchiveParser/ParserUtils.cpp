@@ -276,5 +276,5 @@ bool loadFeatures(const Archive::ArchivePath& tablePath, const char* locale, con
 bool loadFeatures(const Archive::ArchivePath& tablePath, const char* locale, const char* env)
 {
 	std::string buffer;
-	return loadFeatures(tablePath, locale, env);
+	return loadFeatures(tablePath, locale, env, buffer);
 }
